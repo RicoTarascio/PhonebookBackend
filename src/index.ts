@@ -3,7 +3,8 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import { apisInfoLogger } from "./utils/loggers";
-import restRouter from "./rest/apis";
+import contactRest from "./rest/contactRest";
+import errorMiddleware from "./utils/errorMiddleware";
 
 const server = express();
 server.use(cors()); // enables cors for all routes
@@ -17,7 +18,9 @@ server.get("/hello", (req, res) => {
   res.send("Hello!😁");
 });
 
-server.use(restRouter);
+server.use(contactRest);
+
+server.use(errorMiddleware);
 
 const PORT = process.env.PORT;
 server.listen(PORT, () => {

@@ -1,10 +1,5 @@
 import { Contact } from "@prisma/client";
-import express, {
-  ErrorRequestHandler,
-  NextFunction,
-  Request,
-  Response,
-} from "express";
+import express from "express";
 import {
   createContact,
   deleteAllContacts,
@@ -14,13 +9,10 @@ import {
   retrieveContactByPhone,
   retrieveContactsByName,
 } from "../services/contanctService";
-const restRouter = express.Router();
+import restApi from "../utils/restApi";
+const contactRest = express.Router();
 
-const restApi = async (next: NextFunction, service: Function) => {
-  return service().catch((err: Error) => next(err));
-};
-
-restRouter.get("/contacts", (req, res, next) => {
+contactRest.get("/contacts", (req, res, next) => {
   restApi(next, async () => {
     if (req.query.id) {
       return retrieveContactById(
@@ -55,7 +47,7 @@ restRouter.get("/contacts", (req, res, next) => {
   });
 });
 
-restRouter.post("/contacts", (req, res, next) => {
+contactRest.post("/contacts", (req, res, next) => {
   restApi(next, async () => {
     if (!req.body) throw new Error("Body not present or not in JSON format!");
 
@@ -65,7 +57,7 @@ restRouter.post("/contacts", (req, res, next) => {
   });
 });
 
-restRouter.delete("/contacts", (req, res, next) => {
+contactRest.delete("/contacts", (req, res, next) => {
   restApi(next, async () => {
     if (req.query.id) {
       return deleteContactById(+req.query.id).then((contact) => {
@@ -79,14 +71,4 @@ restRouter.delete("/contacts", (req, res, next) => {
   });
 });
 
-const errorMiddleware: ErrorRequestHandler = (err, req, res, next) => {
-  res.status(500).json({
-    errorType: "DatabaseError",
-    endpoint: req.path,
-    message: err.message,
-  });
-};
-
-restRouter.use(errorMiddleware);
-
-export default restRouter;
+export default contactRest;
