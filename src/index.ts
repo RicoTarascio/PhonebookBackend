@@ -5,6 +5,8 @@ import cors from "cors";
 import { apisInfoLogger } from "./utils/loggers";
 import contactRest from "./rest/contactRest";
 import errorMiddleware from "./utils/errorMiddleware";
+import categoryRest from "./rest/categoryRest";
+import infoRest from "./rest/infoRest";
 
 const server = express();
 server.use(cors()); // enables cors for all routes
@@ -19,6 +21,8 @@ server.get("/hello", (req, res) => {
 });
 
 server.use(contactRest);
+server.use(categoryRest);
+server.use("/info", infoRest);
 
 server.use(errorMiddleware);
 

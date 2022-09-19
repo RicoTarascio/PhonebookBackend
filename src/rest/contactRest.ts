@@ -13,60 +13,41 @@ import restApi from "../utils/restApi";
 const contactRest = express.Router();
 
 contactRest.get("/contacts", (req, res, next) => {
-  restApi(next, async () => {
+  restApi(res, next, async () => {
     if (req.query.id) {
-      return retrieveContactById(
-        +req.query.id,
-        !!req.query.includeCategory
-      ).then((contact) => {
-        res.json(contact);
-      });
+      return retrieveContactById(+req.query.id, !!req.query.includeCategory);
     }
     if (req.query.telephoneNum) {
       return retrieveContactByPhone(
         "" + req.query.telephoneNum,
         !!req.query.includeCategory
-      ).then((contacts) => {
-        res.json(contacts);
-      });
+      );
     }
     if (req.query.name) {
       return retrieveContactsByName(
         "" + req.query.name,
         !!req.query.includeCategory
-      ).then((contacts) => {
-        res.json(contacts);
-      });
-    } else {
-      return retrieveAllContacts(!!req.query.includeCategory).then(
-        (contacts) => {
-          res.json(contacts);
-        }
       );
+    } else {
+      return retrieveAllContacts(!!req.query.includeCategory);
     }
   });
 });
 
 contactRest.post("/contacts", (req, res, next) => {
-  restApi(next, async () => {
+  restApi(res, next, async () => {
     if (!req.body) throw new Error("Body not present or not in JSON format!");
 
-    return createContact(req.body as Contact).then((contact) => {
-      res.json(contact);
-    });
+    return createContact(req.body as Contact);
   });
 });
 
 contactRest.delete("/contacts", (req, res, next) => {
-  restApi(next, async () => {
+  restApi(res, next, async () => {
     if (req.query.id) {
-      return deleteContactById(+req.query.id).then((contact) => {
-        res.json(contact);
-      });
+      return deleteContactById(+req.query.id);
     } else {
-      return deleteAllContacts().then((contacts) => {
-        res.json(contacts);
-      });
+      return deleteAllContacts();
     }
   });
 });
