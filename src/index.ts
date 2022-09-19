@@ -26,7 +26,7 @@ server.use("/info", infoRest);
 
 server.use(errorMiddleware);
 
-const PORT = process.env.PORT;
+const PORT = 3000;
 server.listen(PORT, () => {
   console.log("\n\n🚀 Server running at http://localhost:" + PORT);
 });
