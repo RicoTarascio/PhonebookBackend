@@ -6,7 +6,7 @@ const errorMiddleware: ErrorRequestHandler = (err, req, res, next) => {
     endpoint: req.path,
     message: err.message,
   });
-  next();
+  next(err);
 };
 
 export default errorMiddleware;

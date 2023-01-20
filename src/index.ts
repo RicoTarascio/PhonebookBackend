@@ -2,7 +2,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import cors from "cors";
-import { apisInfoLogger } from "./utils/loggers";
+import { apisErrorLogger, apisInfoLogger } from "./utils/loggers";
 import contactRest from "./rest/contactRest";
 import errorMiddleware from "./utils/errorMiddleware";
 import categoryRest from "./rest/categoryRest";
@@ -25,6 +25,7 @@ server.use(categoryRest);
 server.use("/info", infoRest);
 
 server.use(errorMiddleware);
+server.use(apisErrorLogger);
 
 const PORT = 3000;
 server.listen(PORT, () => {
