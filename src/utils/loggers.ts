@@ -21,7 +21,7 @@ const apisErrorLogger: ErrorRequestHandler = (err, req, res, next) => {
   console.log(" • Error:", err.message);
 
   console.log("\n-----------\n");
-  next();
+  next(err);
 };
 
 export { apisInfoLogger, apisErrorLogger };
